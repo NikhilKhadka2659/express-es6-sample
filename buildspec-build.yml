@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - echo "Installing dependencies..."
+      - npm ci
+  build:
+    commands:
+      - echo "Running build step from coordinator's package.json..."
+      - npm run build
+  post_build:
+    commands:
+      - echo "Pruning node_modules from artifact (EB installs deps itself)"
+      - rm -rf node_modules
+      - echo "Root contents:" && ls -la
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
